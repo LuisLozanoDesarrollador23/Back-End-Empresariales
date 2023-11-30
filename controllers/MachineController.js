@@ -3,23 +3,23 @@ import Machine  from '../models/Machine.js';
 
 const createMachine = async (req, res) => {
     const machineData = req.body
-    
 
     const machine = new Machine({
         name: machineData.name,
         serial: machineData.serial,    
         price: machineData.price,
-        stock:machineData.stock,
-        status:machineData.status,        
-        characteristics:machineData.characteristics,
+        stock: machineData.stock,
+        status: machineData.status,        
+        characteristics: machineData.characteristics,
     })
 
     try {
-        await Machine.save()
+        // Aquí llamamos a .save() en la instancia, no en el modelo
+        await machine.save();
 
-        res.status(201).json(machine)
+        res.status(201).json(machine);
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ message: err.message });
     }
 }
 
@@ -27,18 +27,19 @@ const getMachine = async (req, res) => {
     const { id } = req.params
 
     try {
-        const machine = Machine.findById(id)
+        const machine = await Machine.findById(id);
 
         if (machine) {
-            res.json(machine)
+            res.json(machine);
+        } else {
+            res.status(404).json({ message: 'Machine not found' });
         }
 
-        res.status(404).json({ message: 'Machine not found' })
-
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ message: err.message });
     }
-}
+};
+
 
 const getMachines = async (req, res) => {
     try {
