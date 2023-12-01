@@ -5,9 +5,14 @@ import machineRoutes from './routes/MachineRoute.js'
 import ManagementRoute from './routes/ManagementRoute.js'
 import rentRoutes from './routes/RentRoute.js'
 import userRoutes from './routes/UserRoute.js'
+import cors from 'cors';
+
 
 const PORT = 3000
 const app = express()
+
+app.use(cors());
+
 app.use(express.json())
 
 app.use('/items', itemRoutes)
